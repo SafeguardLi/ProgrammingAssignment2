@@ -5,7 +5,7 @@ makeCacheMatrix <- function(x = matrix()) {
         i <- NULL
         set <- function(y) {
                 x <<- y
-                i <<- NULL
+                i <<- NULL ##reset the matrix and i
         }
         get <- function() x
         setmatrix <- function(matrix) i <<- matrix ##cache its inverse matrix
@@ -24,13 +24,13 @@ makeCacheMatrix <- function(x = matrix()) {
 ##retrieve the inverse from the cache.
 
 cacheSolve <- function(x, ...) {
-        i <- x$getmatrix()
-        if(!is.null(i)) {
+        i <- x$getmatrix() ##call the getmatrix() so to read the cache
+        if(!is.null(i)) { ##this step is critical: it evades the recalculation
                 message("getting cached data")
-                return(i)
+                return(i) 
         }
         data <- x$get()
         i <- solve(data, ...)
-        x$setmatrix(i)
+        x$setmatrix(i) ##store the inverse matrix to makeCacheMatrix
         i
 }
